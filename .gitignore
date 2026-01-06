@@ -1,0 +1,15 @@
+# md files
+CLAUDE.md
+respondr-backend-build-prompt.md
+respondr-blueprint.md
+
+
+# log files
+*.log
+
+
+
+# environment files
+.env
+.env.local
+
