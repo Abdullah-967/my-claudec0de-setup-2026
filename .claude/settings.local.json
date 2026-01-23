@@ -1,0 +1,9 @@
+{
+  "enableAllProjectMcpServers": true,
+  "enabledMcpjsonServers": [
+    "langgraph-docs"
+  ],
+  "enabledPlugins": {
+    "context7@claude-plugins-official": true
+  }
+}
