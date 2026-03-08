@@ -1,44 +1,80 @@
-# Project Memory & Rules
+# User Preferences
 
-## 1. Operating Protocol (The "Sync" Flow)
-- **Context Default:** When uncertain about project state, decisions, or implementation approach, ALWAYS read `features.json` and `HANDOFF.md` first. These are the authoritative sources of truth for what has been done and what needs doing.
-- **State Discovery:** At the start of every session (or when `/sync` is called), you MUST:
-    1. Run `ls -R` to map the current repository structure.
-    2. Read `features.json` to identify the current feature checklist.
-    3. Read `HANDOFF.md` to recover the narrative context from the last agent.
-    4. **Git Context:** Run `git log --oneline -10` to see actual code changes and `git status` to check for uncommitted work.
-    5. **Environment:** Execute `./init.sh` to ensure the dev server and dependencies are active.
-- **Task Execution:** Work on exactly ONE atomic feature from `features.json` at a time.
-- **Verification:** Only mark a feature as `passes: true` after running its specific test command. Use browser automation for visual verification of UI changes.
+## About
 
-## 2. Engineering Standards
-- **Git Worktrees:** For complex features or parallel tasks, create a dedicated Git worktree to isolate the environment and maintain a clean state.
-- **Atomic Commits:** Make a Git commit immediately after a feature is verified and `features.json` is updated.
-- **No-Clutter Rule:** Do not modify files outside the current feature scope unless refactoring is explicitly requested.
-- **Verification Gate**: A feature is ONLY "Complete" when:
-  1. The specific tests of this feature return 0 exit code.
+- Name: [Your Name]
+- Platform: [OS + shell, e.g. Windows 11, Git Bash]
 
-## 3. The "Shift-End" Protocol
-Before terminating a session, you MUST leave the project ready for the next "shift":
-1. **Update `features.json`**: Set the current feature to `passes: true`.
-2. **Update `HANDOFF.md`**:
-   - **INSERT** a new session entry at the TOP of HANDOFF.md with:
-     - `## Session [DATE] - [FEATURE_ID]`
-     - What was implemented/achieved
-     - Any blockers or debt introduced
-   - **Concise Writing Rules** (keep entries scannable, not verbose):
-     - Use bullet points, not paragraphs
-     - List files changed with one-line descriptions: `path/file.py - added X`
-     - For decisions, state the choice made, not the reasoning process
-     - Blockers/debt: one line each, actionable
-     - Max 8-10 lines per session entry (excluding file lists)
-     - Omit filler words; write in telegram style when possible
-   - The `Next Step` section at the bottom should be updated to reflect the next feature.
-3. **Commit**: Finalize work with a descriptive commit message linking to the feature ID.
+## Coding Style
 
-## 4. Critical Commands
-- **Initialization**: `./init.sh` (Linux/Mac) or `init.bat` (Windows)
-- **Checklist Status**: `cat features.json`
-- **Context Refresh**: `/sync` (Custom Command)
-- **Primary Test Suite**: `npm test` (or project-specific equivalent)
+- Keep code minimal and clean
+- Comments explain "why," not "what"
+- Prefer established libraries over custom implementations
+- Type hints in Python, strict TypeScript
 
+## Preferences
+
+- Language: [e.g. Python 3.12+, TypeScript]
+- Framework: [e.g. Next.js 15 App Router]
+- Package manager: [e.g. uv (Python), npm (Node)]
+- Testing: [e.g. pytest, vitest]
+- Linting: [e.g. ruff, biome]
+
+## Git Workflow
+
+- Branch naming: `type/short-description` (e.g. `feat/auth-flow`, `fix/api-timeout`)
+- Prefer small, focused commits over large ones
+- Don't commit unless asked
+
+## Communication
+
+- Be concise — no filler, no preambles
+- When presenting options, give a recommendation with reasoning
+- When stuck or uncertain, say so immediately rather than guessing
+- **If a request is ambiguous or unclear, stop and ask targeted questions before acting**
+- Use plan mode for non-trivial tasks
+- Never include time estimates, durations, or period-based roadmaps
+
+## Error Handling
+
+- Surface errors early, fail fast
+- Log with structured context, not bare messages
+- Don't add defensive error handling for impossible cases
+
+## MCP Config
+
+- MCP servers go in `.mcp.json` (project root) or `~/.claude.json` — never in `settings.local.json` (permissions only)
+
+## Tools
+
+- **Note**: `/note` — capture notes to the vault
+- [Add your MCP tools and skills here]
+
+## Browser QA Protocol
+
+**Applies when:** browser-testing or UI verification via Playwright.
+
+- Act as a senior full-stack engineer. Navigate methodically, read console errors, inspect snapshots.
+- **Never skip, suppress, or retry-loop past errors.** Every error is a signal — trace it to source.
+- **Small/medium fixes** (wrong routes, missing props, styling, null checks): fix immediately, re-test.
+- **Major fixes** (architecture, migrations, >3 files): present findings and proposed fix first.
+
+# My Vault
+
+Personal knowledge base at `~/.claude/my_vault`. Start with `index.md` — it tells you what's here and when to read each file. This is persistent context (decisions, project state, terminology), not rules.
+
+# Navigation Protocol
+
+BEFORE starting any task:
+
+1. Read `.claude/docs/index.md` — infer where to find relevant information
+2. Read ONLY the matched file(s)
+3. **Never** retrieve all `.md` files in one call
+4. For multi-domain tasks, check the Combos table for pre-mapped file sets
+5. If nothing resonates, work from the codebase directly
+6. If information exists in a doc but isn't reflected in `index.md`, add it there concisely
+
+# HANDOFF.md
+
+- Summarize each completed feature in 1-2 sentences
+- Update at the end of each feature implementation
